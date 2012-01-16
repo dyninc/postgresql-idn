@@ -1,0 +1,6 @@
+# idn extension
+comment = 'An interface to libidn and libidn2'
+default_version = '0.2'
+relocatable = true
+module_pathname = '$libdir/idn'
+encoding = 'UTF-8'

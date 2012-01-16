@@ -1,0 +1,12 @@
+Source: postgresql-idn
+Maintainer: Jon Nelson <jdnelson@dyn.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9), postgresql-server-dev-9.3, libidn11-dev, libidn2-0-dev
+
+Package: postgresql-idn
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A module for doing IDNA stuff in postgresql.
+
