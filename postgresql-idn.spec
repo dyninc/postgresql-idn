@@ -13,7 +13,9 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(id -u -n)
 
 BuildRequires:  libidn-devel
+BuildRequires:  libidn2-devel
 Requires:  libidn
+Requires:  libidn2
 
 BuildRequires: postgresql-devel postgresql-libs
 Requires: postgresql-libs
@@ -25,7 +27,7 @@ A postgresql interface for various functions provided by libidn and libidn2.
 %setup -q
 
 %build
-make build
+make -C sources
 
 %install
 make -C sources -f Makefile install  DESTDIR=$RPM_BUILD_ROOT
