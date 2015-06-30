@@ -2,27 +2,27 @@ set bytea_output = 'escape';
 CREATE EXTENSION idn;
 -- pr29 tests
 select idn_pr29_check(u&'d\0061t\+000061'::text);
- idn_pr29_check
+ idn_pr29_check 
 ----------------
  t
 (1 row)
 
 -- http://www.unicode.org/review/pr-29.html
 select idn_pr29_check(u&'d\0B47\0300\0B3E'::text);
- idn_pr29_check
+ idn_pr29_check 
 ----------------
  f
 (1 row)
 
 select idn_pr29_check(u&'d\1100\0300\1161'::text);
- idn_pr29_check
+ idn_pr29_check 
 ----------------
  f
 (1 row)
 
 -- from a libidn bug report
 select idn_pr29_check(u&'d\1100\0300\4711'::text);
- idn_pr29_check
+ idn_pr29_check 
 ----------------
  t
 (1 row)
@@ -30,50 +30,50 @@ select idn_pr29_check(u&'d\1100\0300\4711'::text);
 -- idna encoding/decoding
 -- smoke tests
 select idn_idna_decode('foo.bar.baz');
- idn_idna_decode
+ idn_idna_decode 
 -----------------
  foo.bar.baz
 (1 row)
 
 select idn_idna_encode('foo.bar.baz');
- idn_idna_encode
+ idn_idna_encode 
 -----------------
  foo.bar.baz
 (1 row)
 
 -- from http://www.unicode.org/faq/idn.html
 select idn_idna_decode('xn--bcher-kva.de');
- idn_idna_decode
+ idn_idna_decode 
 -----------------
  bücher.de
 (1 row)
 
 select idn_idna_encode('bücher.de');
- idn_idna_encode
+ idn_idna_encode  
 ------------------
  xn--bcher-kva.de
 (1 row)
 
 select idn_idna_encode(u&'b\0075\0308cher.de');
- idn_idna_encode
+ idn_idna_encode  
 ------------------
  xn--bcher-kva.de
 (1 row)
 
 select idn_idna_decode('xn--bcher-kva.de', 'IDNA_FLAG_NONE');
- idn_idna_decode
+ idn_idna_decode 
 -----------------
  bücher.de
 (1 row)
 
 select idn_idna_encode('bücher.de', 'IDNA_FLAG_NONE');
- idn_idna_encode
+ idn_idna_encode  
 ------------------
  xn--bcher-kva.de
 (1 row)
 
 select idn_idna_encode(u&'b\0075\0308cher.de', 'IDNA_FLAG_NONE');
- idn_idna_encode
+ idn_idna_encode  
 ------------------
  xn--bcher-kva.de
 (1 row)
@@ -81,34 +81,34 @@ select idn_idna_encode(u&'b\0075\0308cher.de', 'IDNA_FLAG_NONE');
 -- check IDNA_USE_STD3_ASCII_RULES
 -- (basically, 2003 disallowed all but a-z, 0-9, and dash.)
 select idn_idna_encode('foo.ba_r.baz', 'IDNA_FLAG_NONE'); -- success
- idn_idna_encode
+ idn_idna_encode 
 -----------------
  foo.ba_r.baz
 (1 row)
 
 select idn_idna_encode('foo.ba_r.baz', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); -- fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: Non-digit/letter/hyphen in input
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 select idn_idna_encode('foo.ba_r.ba--z', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); -- fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: Non-digit/letter/hyphen in input
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 -- check the not-equal sign
 select idn_idna_encode(u&'foo.bar.\2260baz', 'IDNA_FLAG_NONE'); -- success
-   idn_idna_encode
+   idn_idna_encode    
 ----------------------
  foo.bar.xn--baz-dl2a
 (1 row)
 
 select idn_idna_encode(u&'foo.bar.\2260baz', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); -- fail
-   idn_idna_encode
+   idn_idna_encode    
 ----------------------
  foo.bar.xn--baz-dl2a
 (1 row)
@@ -116,42 +116,42 @@ select idn_idna_encode(u&'foo.bar.\2260baz', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); 
 -- check leading minus
 select idn_idna_encode('-foo.bar.baz', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); -- fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: Forbidden leading or trailing minus sign (`-')
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 -- check trailing minus
 select idn_idna_encode('foo.bar.baz-', 'IDNA_FLAG_USE_STD3_ASCII_RULES'); -- fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: Forbidden leading or trailing minus sign (`-')
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 -- check length
 select idn_idna_encode('third.label.is.morethan63characterslongasyoucanseethisisaverylonglabeltoolonginfact'); -- fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: Output would be too large or too small
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 -- punycode
 select idn_punycode_encode('bücher.de');
- idn_punycode_encode
+ idn_punycode_encode 
 ---------------------
  bcher.de-65a
 (1 row)
 
 select idn_punycode_encode(u&'b\0075\0308cher.de');
- idn_punycode_encode
+ idn_punycode_encode 
 ---------------------
  bucher.de-hkf
 (1 row)
 
 select idn_punycode_decode('bcher.de-65a');
- idn_punycode_decode
+ idn_punycode_decode 
 ---------------------
  bücher.de
 (1 row)
@@ -159,27 +159,27 @@ select idn_punycode_decode('bcher.de-65a');
 -- LATIN SMALL LETTER E WITH ACUTE
 -- first, in NFD
 select idn_punycode_encode(u&'\0065\0301') = 'e-xbb';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 -- then in NFKC
 select idn_punycode_encode(idn_utf8_nfkc_normalize(u&'\0065\0301')) = '9ca';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 -- should return true:
 select idn_utf8_nfkc_normalize(u&'\0065\0301') = u&'\00e9';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn_utf8_nfkc_normalize(u&'\2079') = '9';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
@@ -188,19 +188,19 @@ select idn_utf8_nfkc_normalize(u&'\2079') = '9';
 -- from http://www.unicode.org/faq/idn.html
 -- LATIN SMALL LETTER SHARP S
 select idn_idna_encode(u&'\00DF') = 'ss'; -- 2003
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\00DF') = 'xn--zca'; -- 2008
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_register(u&'\00DF', NULL, 'IDN2_FLAG_NONE') = 'xn--zca'; -- 2008
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
@@ -211,13 +211,13 @@ select idn2_register(u&'\00DF', NULL, 'IDN2_FLAG_NONE') = 'xn--zca'; -- 2008
 -- (öbb.at)
 -- should be same in 2003/2008/UTS46
 select idn_idna_encode(u&'\00f6bb.at') = 'xn--bb-eka.at';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\00f6bb.at') = 'xn--bb-eka.at';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
@@ -227,9 +227,9 @@ select idn2_lookup(u&'\00f6bb.at') = 'xn--bb-eka.at';
 -- it one way or the other.
 select idn2_register(u&'\00f6bb.at', NULL, 'IDN2_FLAG_NONE'); -- disallowed?
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- (ÖBB.at)
@@ -237,57 +237,57 @@ WARNING:  Error encountered performing idn2 register: string contains a disallow
 -- UTS46 allows (w/case change)
 -- 2008 disallows
 select idn_idna_encode(u&'\00d6BB.at') = 'xn--bb-eka.at';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\00d6BB.at'); -- should disallow
 WARNING:  Error encountered performing idn2 lookup: string contains a disallowed character
- idn2_lookup
+ idn2_lookup 
 -------------
-
+ 
 (1 row)
 
 select idn2_register(u&'\00d6BB.at', NULL, 'IDN2_FLAG_NONE'); -- should disallow
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- (√.com)
 -- 2003 + UTS46 allow, 2008 disallows
 select idn_idna_encode(u&'\221a.com') = 'xn--19g.com';
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\221a.com'); -- should disallow
 WARNING:  Error encountered performing idn2 lookup: string contains a disallowed character
- idn2_lookup
+ idn2_lookup 
 -------------
-
+ 
 (1 row)
 
 select idn2_register(u&'\221a.com', NULL, 'IDN2_FLAG_NONE'); -- should disallow
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- (faß.de)
 -- valid across all three, but difference answers for 2008
 select idn_idna_encode(u&'fa\00df.de') = 'fass.de'; -- 2003
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'fa\00df.de') = 'xn--fa-hia.de'; -- 2008
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
@@ -297,9 +297,9 @@ select idn2_lookup(u&'fa\00df.de') = 'xn--fa-hia.de'; -- 2008
 -- it one way or the other.
 select idn2_register(u&'fa\00df.de', NULL, 'IDN2_FLAG_NONE'); -- disallowed for reg?
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- FIXME: unknown what UTS46 does
@@ -308,19 +308,19 @@ WARNING:  Error encountered performing idn2 register: string contains a disallow
 -- valid for 2008 + UTS46
 select idn_idna_encode(u&'\051b\04d9\043b\043f.com'); -- should fail (2003)
 WARNING:  Error encountered converting from IDNA2003 to ASCII: String preparation failed
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 select idn_idna_encode(u&'\051b\04d9\043b\043f.com', 'IDNA_FLAG_ALLOW_UNASSIGNED') = 'xn--k1ai47bhi.com'; -- 2003
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\051b\04d9\043b\043f.com') = 'xn--k1ai47bhi.com'; -- 2008
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
@@ -330,9 +330,9 @@ select idn2_lookup(u&'\051b\04d9\043b\043f.com') = 'xn--k1ai47bhi.com'; -- 2008
 -- it one way or the other.
 select idn2_register(u&'\051b\04d9\043b\043f.com', NULL, 'IDN2_FLAG_NONE'); -- disallowed for 2008 reg?
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- (Ⱥbby.com)
@@ -341,46 +341,46 @@ WARNING:  Error encountered performing idn2 register: string contains a disallow
 -- NOT valid for 2008
 select idn_idna_encode(u&'\023abby.com'); -- should fail
 WARNING:  Error encountered converting from IDNA2003 to ASCII: String preparation failed
- idn_idna_encode
+ idn_idna_encode 
 -----------------
-
+ 
 (1 row)
 
 select idn_idna_encode(u&'\023abby.com', 'IDNA_FLAG_ALLOW_UNASSIGNED') = 'xn--bby-spb.com'; -- 2003
- ?column?
+ ?column? 
 ----------
  t
 (1 row)
 
 select idn2_lookup(u&'\023abby.com', 'IDN2_FLAG_NONE'); -- 2008, fails
 WARNING:  Error encountered performing idn2 lookup: string contains a disallowed character
- idn2_lookup
+ idn2_lookup 
 -------------
-
+ 
 (1 row)
 
 select idn2_register(u&'\023abby.com', NULL, 'IDN2_FLAG_NONE'); -- 2008, fails
 WARNING:  Error encountered performing idn2 register: string contains a disallowed character
- idn2_register
+ idn2_register 
 ---------------
-
+ 
 (1 row)
 
 -- check round trip
 select idn2_register(u&'\00DF'::text, 'xn--zca', 'IDN2_FLAG_ALABEL_ROUNDTRIP'::text);
- idn2_register
+ idn2_register 
 ---------------
  xn--zca
 (1 row)
 
 select idn2_register(NULL, 'xn--zca', 'IDN2_FLAG_ALABEL_ROUNDTRIP'::text);
- idn2_register
+ idn2_register 
 ---------------
  xn--zca
 (1 row)
 
 select idn2_register(NULL, 'xn--zca', NULL);
- idn2_register
+ idn2_register 
 ---------------
  xn--zca
 (1 row)
@@ -389,26 +389,26 @@ select idn2_register(NULL, 'xn--zca', NULL);
 -- the following are in NFD
 select idn2_lookup('regcombéídn.example'); --- fails
 WARNING:  Error encountered performing idn2 lookup: string is not in Unicode NFC format
- idn2_lookup
+ idn2_lookup 
 -------------
-
+ 
 (1 row)
 
 select idn2_lookup(u&'regcombe\0301i\0301dn.example'); --- fails
 WARNING:  Error encountered performing idn2 lookup: string is not in Unicode NFC format
- idn2_lookup
+ idn2_lookup 
 -------------
-
+ 
 (1 row)
 
 select idn2_lookup('regcombéídn.example', 'IDN2_FLAG_NFC_INPUT'); -- succeeds
-         idn2_lookup
+         idn2_lookup         
 -----------------------------
  xn--regcombdn-h4a8b.example
 (1 row)
 
 select idn2_lookup(u&'regcombe\0301i\0301dn.example', 'IDN2_FLAG_NFC_INPUT'); -- succeeds
-         idn2_lookup
+         idn2_lookup         
 -----------------------------
  xn--regcombdn-h4a8b.example
 (1 row)
@@ -419,22 +419,22 @@ select idn2_lookup(u&'regcombe\0301i\0301dn.example', 'IDN2_FLAG_NFC_INPUT'); --
 -- select idn2_lookup('xn--regcombdn-h4a8b.example', 'IDN2_FLAG_ALABEL_ROUNDTRIP|IDN2_FLAG_NFC_INPUT');
 -- stringprep bits
 select stringprep(E'foo.bar.baz', 'trace');
- stringprep
+ stringprep  
 -------------
  foo.bar.baz
 (1 row)
 
 select stringprep(E'foo.bar.baz', 'trace', 'STRINGPREP_FLAG_NONE');
- stringprep
+ stringprep  
 -------------
  foo.bar.baz
 (1 row)
 
 select stringprep(E'foo\003.bar.baz', 'trace'); -- fail
 WARNING:  Error performing stringprep profile conversion: Prohibited code points in input.
- stringprep
+ stringprep 
 ------------
-
+ 
 (1 row)
 
 -- TODO
