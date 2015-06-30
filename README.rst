@@ -26,6 +26,10 @@ Installation in postgresql is fairly simple::
 Examples
 ********
 
+.. NOTE: while useful for demonstration purposes, the canonical API is tested
+as part of the `sql/idn.sql`_ file. Please let somebody know if the documentation
+diverges from the actual (tested) API.
+
 Many examples taken from http://www.unicode.org/faq/idn.html.
 
 - check a string to see if it trips the `PR29`_ check::
@@ -367,7 +371,7 @@ TODO/NOTES
 * the punycode functions in libidn expose a facility for case-folding.
   Since PostgreSQL already includes case-folding smarts, the value-add
   wasn't deemed worth the extra complexity cost.
-
+* document the stringprep portion
 
 .. FIN
 

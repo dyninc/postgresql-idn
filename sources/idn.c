@@ -1014,4 +1014,3 @@ Datum idn_constants(PG_FUNCTION_ARGS)
     }
     SRF_RETURN_DONE(funcctx);
 }
-

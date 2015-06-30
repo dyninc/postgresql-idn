@@ -3,7 +3,7 @@ Maintainer: Jon Nelson <jdnelson@dyn.com>
 Section: misc
 Priority: optional
 Standards-Version: 3.9.5
-Build-Depends: debhelper (>= 9), postgresql-server-dev-9.3, libidn11-dev, libidn2-0-dev
+Build-Depends: debhelper (>= 9), postgresql-server-dev-all, libidn11-dev, libidn2-0-dev
 
 Package: postgresql-idn
 Architecture: any
