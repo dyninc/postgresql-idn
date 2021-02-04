@@ -10,6 +10,6 @@ PG_CPPFLAGS = $(shell pkg-config libidn --cflags)
 
 # can't use -Werror and -Wredundant-decls at the same time
 PG_CPPFLAGS =
-PG_CONFIG = pg_config
+PG_CONFIG ?= pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
